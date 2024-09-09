@@ -1,0 +1,111 @@
+import java.util.List;
+
+public interface Observer {
+    void update(List<Produto> produtosEmPromocao);
+}
+
+
+public class Produto {
+    private String nome;
+    private double preco;
+    private boolean emPromocao;
+
+    public Produto(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+        this.emPromocao = false;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public boolean isEmPromocao() {
+        return emPromocao;
+    }
+
+    public void setEmPromocao(boolean emPromocao) {
+        this.emPromocao = emPromocao;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto
+
+
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Subject {
+    private List<Observer> observers = new ArrayList<>();
+    private List<Produto> listaDeDesejos = new ArrayList<>();
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    public void adicionarProdutoNaLista(Produto produto) {
+        listaDeDesejos.add(produto);
+        notifyObservers();
+    }
+
+    public void removerProdutoDaLista(Produto produto) {
+        listaDeDesejos.remove(produto);
+        notifyObservers();
+    }
+
+    public void produtoEmPromocao(Produto produto) {
+        if (listaDeDesejos.contains(produto)) {
+            produto.setEmPromocao(true);
+            notifyObservers();
+        }
+    }
+
+    private void notifyObservers() {
+        List<Produto> produtosEmPromocao = new ArrayList<>();
+        for (Produto produto : listaDeDesejos) {
+            if (produto.isEmPromocao()) {
+                produtosEmPromocao.add(produto);
+            }
+        }
+        for (Observer observer : observers) {
+            observer.update(produtosEmPromocao);
+        }
+    }
+}
+
+
+import java.util.List;
+
+public class Usuario implements Observer {
+    private String nome;
+
+    public Usuario(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public void update(List<Produto> produtosEmPromocao) {
+        if (!produtosEmPromocao.isEmpty()) {
+            System.out.println("Olá " + nome + ", os seguintes produtos da sua lista de desejos estão em promoção:");
+            for (Produto produto : produtosEmPromocao) {
+                System.out.println(produto.getNome() + " agora está por R$" + produto.getPreco());
+            }
+        } else {
+            System.out.println("Olá " + nome + ", nenhum produto da sua lista de desejos está em promoção no momento.");
+        }
+    }
+}
+
