@@ -1,0 +1,13 @@
+*{
+  box-sizing: border-box;
+ 
+}
+
+html{
+  font-family: sens-sefif;
+}
+
+body{
+  background-color: #242529;
+  margin: 0;
+}
